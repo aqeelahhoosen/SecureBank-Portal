@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Login - Secure Bank International</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F2F6FF;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #F2F6FF;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 40px 20px;
+        }
+
+        .login-form {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-header h1 {
+            color: #B8E3E9;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .form-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+        
+        .tab.active {
+            background: #B8E3E9; 
+            color: #333; 
+        }
+        
+        .tab:hover {
+            color: #1a3a8f;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-group input:focus {
+            border-color: #B8E3E9; 
+            box-shadow: 0 0 0 3px rgba(184, 227, 233, 0.1);
+        }
+        
+        .form-group input.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5aa0 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .form-links a {
+            color: #1a3a8f;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .form-links a:hover {
+            text-decoration: underline;
+            color: #2c5aa0;
+        }
+        
+        .register-section {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid #e1e5ee;
+        }
+        
+        .register-section p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1a3a8f;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+            color: #2c5aa0;
+        }
+        
+        .portal-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5aa0 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .portal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 58, 143, 0.4);
+            background: linear-gradient(135deg, #2c5aa0 0%, #1a3a8f 100%);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .security-note {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #1a3a8f;
+            margin-bottom: 25px;
+        }
+        
+        .security-note p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .login-form {
+                padding: 30px 25px;
+            }
+            
+            .form-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .form-links {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .login-form {
+                padding: 25px 20px;
+            }
+            
+            .form-header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .form-tabs {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+    <div class="header-top">
+        <div class="logo">
+            <h1>SecureBank<span class="logo-subtitle">International</span></h1>
+        </div>
+        <div class="user-info">
+            <!-- Empty on login page -->
+        </div>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#" class="active">Customer Portal</a></li>
+        </ul>
+    </nav>
+</header>
+
+        <main>
+            <div class="login-container">
+                <div class="login-form">
+                    <div class="form-header">
+                        <h1>Customer Login</h1>
+                    </div>
+                    
+                    <div class="form-tabs">
+                        <a href="#" class="tab active">Login</a>
+                        <a href="customer-registration.html" class="tab">Register</a>
+                    </div>
+                    
+                    <div class="security-note">
+                        <p><strong>Secure Access:</strong> Please enter your credentials to access your international payment portal.</p>
+                    </div>
+                    
+                    <form id="customerLoginForm">
+                        <div class="form-group">
+                            <label for="username">Username *</label>
+                            <input type="text" id="username" name="username" required placeholder="Enter your username">
+                            <div class="error-message" id="usernameError">Please enter your username</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="accountNumber">Account Number *</label>
+                            <input type="text" id="accountNumber" name="accountNumber" required placeholder="Enter your account number">
+                            <div class="error-message" id="accountNumberError">Please enter your account number</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" name="password" required placeholder="Enter your password">
+                            <div class="error-message" id="passwordError">Please enter your password</div>
+                        </div>
+                        
+                        <button type="submit" class="login-btn">Login to Customer Portal</button>
+                        
+                        <div class="form-links">
+                            <a href="#">Forgot Password?</a>
+                            <a href="#">Request Account</a>
+                        </div>
+                    </form>
+                    
+                    <div class="register-section">
+                        <p>New to Secure Bank International?</p>
+                        <a href="customer-registration.html" class="portal-btn">Register Now</a>
+                        <br>
+                        <a href="index.html" class="back-link">← Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Secure Bank International. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('customerLoginForm');
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    // Simulate login process
+                    const loginBtn = form.querySelector('.login-btn');
+                    const originalText = loginBtn.textContent;
+                    loginBtn.textContent = 'Logging in...';
+                    loginBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // For demo purposes, always show success
+                        // In real application, this would validate credentials
+                        alert('Login successful! Welcome to Secure Bank International.');
+                        window.location.href = 'customer-dashboard.html'; // Redirect to dashboard
+                    }, 1500);
+                }
+            });
+            
+            function validateForm() {
+                let isValid = true;
+                
+                // Username validation
+                const username = document.getElementById('username').value.trim();
+                if (username.length === 0) {
+                    showError('usernameError', 'Please enter your username');
+                    isValid = false;
+                } else {
+                    hideError('usernameError');
+                }
+                
+                // Account Number validation
+                const accountNumber = document.getElementById('accountNumber').value.trim();
+                if (accountNumber.length === 0) {
+                    showError('accountNumberError', 'Please enter your account number');
+                    isValid = false;
+                } else if (!/^\d+$/.test(accountNumber)) {
+                    showError('accountNumberError', 'Please enter a valid account number');
+                    isValid = false;
+                } else {
+                    hideError('accountNumberError');
+                }
+                
+                // Password validation
+                const password = document.getElementById('password').value;
+                if (password.length === 0) {
+                    showError('passwordError', 'Please enter your password');
+                    isValid = false;
+                } else {
+                    hideError('passwordError');
+                }
+                
+                return isValid;
+            }
+            
+            function showError(errorElementId, message) {
+                const errorElement = document.getElementById(errorElementId);
+                const inputElement = document.getElementById(errorElementId.replace('Error', ''));
+                
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                inputElement.classList.add('error');
+            }
+            
+            function hideError(errorElementId) {
+                const errorElement = document.getElementById(errorElementId);
+                const inputElement = document.getElementById(errorElementId.replace('Error', ''));
+                
+                errorElement.style.display = 'none';
+                inputElement.classList.remove('error');
+            }
+            
+            // Real-time validation on input
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const errorId = this.id + 'Error';
+                    if (this.value.trim()) {
+                        hideError(errorId);
+                    }
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (this.id === 'accountNumber' && this.value.trim()) {
+                        if (!/^\d+$/.test(this.value.trim())) {
+                            showError(this.id + 'Error', 'Please enter a valid account number');
+                        }
+                    }
+                });
+            });
+            
+            // Add keyboard shortcut for demo (Ctrl+Enter to submit)
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

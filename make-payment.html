@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make International Payment - SecureBank International</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+    background-color: #F5F6F7 !important;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #F5F6F7;
+    min-height: 100vh;
+}
+
+
+.user-info {
+    background: #B8E3E9;
+    color: #333; 
+}
+
+.payment-btn {
+    background: #B8E3E9; 
+    color: #333; 
+}
+
+.payment-btn:hover {
+    background: #A0D8E0;
+    color: #333;
+}
+
+.payment-card h3, .payments-history h3 {
+    color: #B8E3E9; 
+}
+
+.summary-card .amount {
+    color: #B8E3E9; 
+}
+
+.payment-amount .amount {
+    color: #B8E3E9; 
+}
+
+.form-header h1 {
+    color: #B8E3E9; 
+}
+
+.section-title {
+    color: #B8E3E9; 
+}
+
+.btn-primary {
+    background: #B8E3E9;
+    color: #333; 
+}
+
+.btn-primary:hover {
+    background: #A0D8E0; 
+    color: #333;
+}
+
+.success-icon {
+    background: #B8E3E9; 
+    color: #333; 
+}
+
+.info-notice {
+    background: #E8F7FA; 
+    border: 1px solid #B8E3E9;
+}
+
+.info-notice h4 {
+    color: #333; 
+}
+
+.info-notice p {
+    color: #333; 
+}
+
+        .payment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .payment-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .payment-header h1 {
+            color: #B8E3E9;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .payment-header .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .payment-form {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: #B8E3E9;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e5ee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #B8E3E9;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-label .required {
+            color: #dc3545;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus {
+           border-color: #B8E3E9; 
+    box-shadow: 0 0 0 3px rgba(184, 227, 233, 0.1);
+        }
+
+        .form-input.error, .form-select.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .amount-input {
+            position: relative;
+        }
+
+        .amount-input .currency-symbol {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-weight: 500;
+        }
+
+        .amount-input .form-input {
+            padding-left: 40px;
+        }
+
+        .form-hint {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .important-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .important-notice h4 {
+            color: #856404;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .important-notice p {
+            color: #856404;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e1e5ee;
+            margin: 30px 0;
+        }
+
+        .payment-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5aa0 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 143, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #B8E3E9;
+            border: 2px solid #1a3a8f;
+        }
+
+        .btn-outline:hover {
+            color: #B8E3E9;
+            color: #1a3a8f;
+        }
+
+        .navigation {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            padding: 12px 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5aa0 100%);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .payment-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-container {
+                padding: 15px;
+            }
+
+            .payment-form {
+                padding: 25px;
+            }
+
+            .payment-header {
+                padding: 20px;
+            }
+
+            .payment-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .currency-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .currency-option {
+            padding: 12px;
+            border: 2px solid #e1e5ee;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .currency-option:hover, .currency-option.selected {
+            border-color: #B8E3E9;
+        }
+
+        .currency-option.selected {
+            background: #B8E3E9; 
+            color: #333;
+        }
+
+        .currency-option .code {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .currency-option .name {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+    <div class="header-top">
+        <div class="logo">
+            <h1>SecureBank<span class="logo-subtitle">International</span></h1>
+        </div>
+        <div class="user-info">
+            <span>Hello, [customer name]</span>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="customer-dashboard.html">Dashboard</a></li>
+            <li><a href="#" class="active">Payments</a></li>
+            <li><a href="#">Transactions</a></li>
+            <li><a href="#">Account Settings</a></li>
+        </ul>
+    </nav>
+</header>
+
+        <main class="payment-container">
+            <!-- Navigation Menu -->
+            <div class="navigation">
+                <div class="nav-menu">
+                    <a href="customer-dashboard.html" class="nav-item">Dashboard</a>
+                    <a href="#" class="nav-item active">Make Payment</a>
+                    <a href="#" class="nav-item">Payment History</a>
+                    <a href="#" class="nav-item">Templates</a>
+                    <a href="#" class="nav-item">Support</a>
+                </div>
+            </div>
+
+            <!-- Payment Header -->
+            <div class="payment-header">
+                <h1>Customer Portal</h1>
+                <p class="subtitle">New International Payment</p>
+            </div>
+
+            <!-- Payment Form -->
+            <form id="paymentForm" class="payment-form">
+                <!-- Payment Details Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-money-bill-wave"></i>
+                        Payment Details
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="amount" class="form-label">
+                                Amount <span class="required">*</span>
+                            </label>
+                            <div class="amount-input">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="amount" name="amount" class="form-input" placeholder="0.00" step="0.01" min="0" required>
+                            </div>
+                            <div class="error-message" id="amountError">Please enter a valid amount</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="currency" class="form-label">
+                                Select Currency <span class="required">*</span>
+                            </label>
+                            <select id="currency" name="currency" class="form-select" required>
+                                <option value="">Choose currency</option>
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CHF">CHF - Swiss Franc</option>
+                            </select>
+                            <div class="error-message" id="currencyError">Please select a currency</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Payment Product</label>
+                        <div class="form-input" style="background: #f8f9fa; color: #666; border-color: #e1e5ee;">
+                            SWIFT International Transfer
+                        </div>
+                        <div class="form-hint">
+                            Secure international payments via SWIFT network
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beneficiary Details Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Beneficiary Details
+                    </h3>
+
+                    <div class="form-group">
+                        <label for="beneficiaryName" class="form-label">
+                            Beneficiary Name <span class="required">*</span>
+                        </label>
+                        <input type="text" id="beneficiaryName" name="beneficiaryName" class="form-input" placeholder="Enter beneficiary's full name" required>
+                        <div class="error-message" id="beneficiaryNameError">Please enter beneficiary's full name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="beneficiaryAccount" class="form-label">
+                            Beneficiary Account Number <span class="required">*</span>
+                        </label>
+                        <input type="text" id="beneficiaryAccount" name="beneficiaryAccount" class="form-input" placeholder="Enter beneficiary's account number" required>
+                        <div class="error-message" id="beneficiaryAccountError">Please enter a valid account number</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="swiftCode" class="form-label">
+                            Beneficiary SWIFT/BIC Code <span class="required">*</span>
+                        </label>
+                        <input type="text" id="swiftCode" name="swiftCode" class="form-input" placeholder="e.g., ASHANILZA" required>
+                        <div class="error-message" id="swiftCodeError">Please enter a valid SWIFT/BIC code</div>
+                        <div class="form-hint">
+                            BIC (Bank Identifier Code) - 8 or 11 characters
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Important Notice -->
+                <div class="important-notice">
+                    <h4>
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Important Notice
+                    </h4>
+                    <p>Please verify all payment details carefully. International transfers cannot be easily reversed once processed. Ensure all beneficiary information is accurate.</p>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Payment Actions -->
+                <div class="payment-actions">
+                    <button type="button" class="btn btn-outline" onclick="window.location.href='customer-dashboard.html'">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Dashboard
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="saveDraftBtn">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Pay Now
+                    </button>
+                </div>
+            </form>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 SecureBank International. All rights reserved.</p>
+            <p>www.securebank.com | Customer Support: 1-800-SECURE-BANK</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('paymentForm');
+            const amountInput = document.getElementById('amount');
+            const currencySelect = document.getElementById('currency');
+            const saveDraftBtn = document.getElementById('saveDraftBtn');
+
+            // Format amount input
+            amountInput.addEventListener('blur', function() {
+                const value = parseFloat(this.value);
+                if (!isNaN(value) && value >= 0) {
+                    this.value = value.toFixed(2);
+                }
+            });
+
+            // Update currency symbol based on selection
+            currencySelect.addEventListener('change', function() {
+                const currencySymbols = {
+                    'USD': '$',
+                    'EUR': '€',
+                    'GBP': '£',
+                    'JPY': '¥',
+                    'CAD': 'C$',
+                    'AUD': 'A$',
+                    'ZAR': 'R',
+                    'CHF': 'CHF'
+                };
+                const symbol = currencySymbols[this.value] || '$';
+                document.querySelector('.currency-symbol').textContent = symbol;
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    // Show processing state
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                    submitBtn.disabled = true;
+
+                    // Simulate payment processing
+                    setTimeout(() => {
+                        alert('Payment processed successfully! Your international transfer has been initiated.');
+                        window.location.href = 'customer-dashboard.html';
+                    }, 2000);
+                }
+            });
+
+            // Save draft functionality
+            saveDraftBtn.addEventListener('click', function() {
+                const formData = new FormData(form);
+                let hasData = false;
+                
+                for (let [key, value] of formData.entries()) {
+                    if (value.trim() !== '') {
+                        hasData = true;
+                        break;
+                    }
+                }
+
+                if (hasData) {
+                    // Show saving state
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                    this.disabled = true;
+
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                        alert('Draft saved successfully! You can continue later.');
+                    }, 1000);
+                } else {
+                    alert('Please enter some payment details to save as draft.');
+                }
+            });
+
+            function validateForm() {
+                let isValid = true;
+
+                // Amount validation
+                const amount = parseFloat(amountInput.value);
+                if (isNaN(amount) || amount <= 0) {
+                    showError('amountError', 'Please enter a valid amount greater than 0');
+                    isValid = false;
+                } else {
+                    hideError('amountError');
+                }
+
+                // Currency validation
+                if (!currencySelect.value) {
+                    showError('currencyError', 'Please select a currency');
+                    isValid = false;
+                } else {
+                    hideError('currencyError');
+                }
+
+                // Beneficiary name validation
+                const beneficiaryName = document.getElementById('beneficiaryName').value.trim();
+                if (beneficiaryName.length < 2) {
+                    showError('beneficiaryNameError', 'Please enter beneficiary\'s full name');
+                    isValid = false;
+                } else {
+                    hideError('beneficiaryNameError');
+                }
+
+                // Account number validation
+                const accountNumber = document.getElementById('beneficiaryAccount').value.trim();
+                if (accountNumber.length < 5) {
+                    showError('beneficiaryAccountError', 'Please enter a valid account number');
+                    isValid = false;
+                } else {
+                    hideError('beneficiaryAccountError');
+                }
+
+                // SWIFT code validation
+                const swiftCode = document.getElementById('swiftCode').value.trim();
+                if (swiftCode.length < 8 || swiftCode.length > 11) {
+                    showError('swiftCodeError', 'Please enter a valid SWIFT/BIC code (8-11 characters)');
+                    isValid = false;
+                } else {
+                    hideError('swiftCodeError');
+                }
+
+                return isValid;
+            }
+
+            function showError(errorElementId, message) {
+                const errorElement = document.getElementById(errorElementId);
+                const inputElement = document.getElementById(errorElementId.replace('Error', ''));
+                
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                inputElement.classList.add('error');
+            }
+
+            function hideError(errorElementId) {
+                const errorElement = document.getElementById(errorElementId);
+                const inputElement = document.getElementById(errorElementId.replace('Error', ''));
+                
+                errorElement.style.display = 'none';
+                inputElement.classList.remove('error');
+            }
+
+            // Real-time validation
+            const inputs = form.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const errorId = this.id + 'Error';
+                    if (this.value.trim()) {
+                        hideError(errorId);
+                    }
+                });
+            });
+
+            // Logout functionality
+            const logoutBtn = document.querySelector('.logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        alert('You have been logged out successfully.');
+                        window.location.href = 'customer-login.html';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

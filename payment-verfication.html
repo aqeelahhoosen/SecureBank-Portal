@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Verification - SecureBank International</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+    background-color: #F5F6F7 !important;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #F5F6F7;
+    min-height: 100vh;
+}
+
+
+.user-info {
+    background: #B8E3E9;
+    color: #333; 
+}
+
+.payment-btn {
+    background: #B8E3E9; 
+    color: #333; 
+}
+
+.payment-btn:hover {
+    background: #A0D8E0;
+    color: #333;
+}
+
+.payment-card h3, .payments-history h3 {
+    color: #B8E3E9; 
+}
+
+.summary-card .amount {
+    color: #B8E3E9; 
+}
+
+.payment-amount .amount {
+    color: #B8E3E9; 
+}
+
+.form-header h1 {
+    color: #B8E3E9; 
+}
+
+.section-title {
+    color: #B8E3E9; 
+}
+
+.btn-primary {
+    background: #B8E3E9;
+    color: #333; 
+}
+
+.btn-primary:hover {
+    background: #A0D8E0; 
+    color: #333;
+}
+
+.success-icon {
+    background: #B8E3E9; 
+    color: #333; 
+}
+
+.info-notice {
+    background: #E8F7FA; 
+    border: 1px solid #B8E3E9;
+}
+
+.info-notice h4 {
+    color: #333; 
+}
+
+.info-notice p {
+    color: #333; 
+}
+
+        .verification-container {
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 40px 20px; 
+}
+
+        .verification-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .verification-header h1 {
+            color: #1a3a8f;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .verification-header .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            color: #1a3a8f;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e5ee;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-menu a:hover {
+            background: #f8f9fa;
+            color: #1a3a8f;
+        }
+
+        .sidebar-menu a.active {
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5aa0 100%);
+            color: white;
+        }
+
+        .sidebar-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .verification-card {
+    background: white;
+    border-radius: 20px;
+    padding: 50px; /* Increased padding */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); /* Enhanced shadow */
+    width: 100%;
+    max-width: 900px; /* Increased max-width */
+    margin: 0 auto;
+    min-height: 600px; /* Minimum height */
+}
+
+.success-header {
+    text-align: center;
+    margin-bottom: 50px; /* Increased margin */
+    padding-bottom: 30px;
+    border-bottom: 2px solid #e1e5ee;
+}
+
+.success-icon {
+    width: 100px; /* Larger icon */
+    height: 100px;
+    background: #B8E3E9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px; /* Increased margin */
+    color: #333;
+    font-size: 2.5rem; /* Larger icon */
+    box-shadow: 0 6px 20px rgba(184, 227, 233, 0.3);
+}
+
+.success-header h2 {
+    color: #B8E3E9;
+    font-size: 2.2rem; /* Larger heading */
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.success-header p {
+    color: #666;
+    font-size: 1.2rem; /* Larger text */
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.payment-details {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 40px; /* Increased padding */
+    margin-bottom: 40px;
+    border: 1px solid #e1e5ee;
+}
+
+.status-header {
+    text-align: center;
+    margin-bottom: 40px; /* Increased margin */
+    padding-bottom: 25px;
+    border-bottom: 2px solid #e1e5ee;
+}
+
+.status-header h3 {
+    color: #B8E3E9;
+    font-size: 1.6rem; /* Larger heading */
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.status-message {
+    color: #666;
+    font-size: 1.1rem; /* Larger text */
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Wider columns */
+    gap: 30px; /* Increased gap */
+    margin-bottom: 40px;
+}
+
+.detail-group {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #e1e5ee;
+    transition: all 0.3s ease;
+}
+
+.detail-group:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.detail-label {
+    color: #666;
+    font-size: 0.95rem; /* Slightly larger */
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    color: #333;
+    font-size: 1.2rem; /* Larger values */
+    font-weight: 600;
+    padding: 15px 0;
+    border-bottom: 2px solid #e1e5ee;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 10px 20px; /* Larger badge */
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.timeline-info {
+    background: white;
+    border-radius: 12px;
+    padding: 30px; /* Increased padding */
+    margin-top: 30px;
+    border: 1px solid #e1e5ee;
+}
+
+.timeline-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0; /* Increased padding */
+    border-bottom: 2px solid #e1e5ee;
+}
+
+.timeline-row:last-child {
+    border-bottom: none;
+}
+
+.timeline-label {
+    color: #666;
+    font-weight: 600;
+    font-size: 1rem; /* Larger text */
+}
+
+.timeline-value {
+    color: #333;
+    font-weight: 700;
+    font-size: 1.1rem; /* Larger text */
+}
+
+.date-time {
+    color: #B8E3E9;
+    font-weight: 700;
+}
+
+.info-notice {
+    background: #E8F7FA;
+    border: 2px solid #B8E3E9;
+    border-radius: 15px;
+    padding: 35px; /* Increased padding */
+    margin: 40px 0;
+}
+
+.info-notice h4 {
+    color: #333;
+    font-size: 1.3rem; /* Larger heading */
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-notice p {
+    color: #333;
+    margin: 0;
+    line-height: 1.6;
+    font-size: 1.05rem; /* Slightly larger */
+}
+
+.action-buttons {
+    display: flex;
+    gap: 20px; /* Increased gap */
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.btn {
+    padding: 18px 35px; /* Larger buttons */
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 200px; /* Minimum button width */
+}
+
+.next-steps {
+    margin-top: 50px; /* Increased margin */
+    padding-top: 40px;
+    border-top: 2px solid #e1e5ee;
+}
+
+.next-steps h4 {
+    color: #B8E3E9;
+    font-size: 1.4rem; /* Larger heading */
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.steps-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px; /* Increased margin */
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 4px solid #B8E3E9;
+}
+
+.steps-list li i {
+    color: #B8E3E9;
+    margin-right: 15px;
+    margin-top: 3px;
+    font-size: 1.2rem; /* Larger icons */
+}
+
+.steps-list li div {
+    font-size: 1.05rem; /* Slightly larger text */
+    line-height: 1.6;
+}
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+        @media (max-width: 768px) {
+    .verification-card {
+        padding: 30px; /* Adjusted for mobile */
+        margin: 0 10px;
+    }
+    
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+    
+    .success-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .details-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+        @media (max-width: 480px) {
+    .verification-container {
+        padding: 20px 10px;
+    }
+    
+    .verification-card {
+        padding: 25px 20px;
+    }
+    
+    .payment-details {
+        padding: 25px;
+    }
+    
+    .timeline-info {
+        padding: 20px;
+    }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+    <div class="header-top">
+        <div class="logo">
+            <h1>SecureBank<span class="logo-subtitle">International</span></h1>
+        </div>
+        <div class="user-info">
+            <span>Hello, [customer name]</span>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="customer-dashboard.html">Dashboard</a></li>
+            <li><a href="make-payment.html">Payments</a></li>
+            <li><a href="#" class="active">Transactions</a></li>
+            <li><a href="#">Account Settings</a></li>
+        </ul>
+    </nav>
+</header>
+
+        <main class="verification-container">
+            <!-- Verification Header -->
+            <div class="verification-header">
+                <h1>Customer Portal</h1>
+                <p class="subtitle">Payment Verification</p>
+            </div>
+
+            <div class="main-content">
+            <div class="verification-card">
+    <div class="success-header">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h2>Payment Submitted Successfully</h2>
+        <p>Your payment of <strong id="paymentAmount">$150.00</strong> to <strong id="beneficiaryName">Jane Beneficiary</strong> is pending verification.</p>
+    </div>
+
+    <!-- Updated Payment Details Section -->
+    <div class="payment-details">
+        <div class="status-header">
+            <h3>Payment Status</h3>
+            <p class="status-message">Beneficiary is pending verification.</p>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-group">
+                <span class="detail-label">Reference ID</span>
+                <span class="detail-value" id="referenceId">1757930947925</span>
+            </div>
+            
+            <div class="detail-group">
+                <span class="detail-label">Beneficiary Account</span>
+                <span class="detail-value" id="beneficiaryAccount">0987654321</span>
+            </div>
+            
+            <div class="detail-group">
+                <span class="detail-label">SWIFT Code</span>
+                <span class="detail-value" id="swiftCode">ABNANL2A</span>
+            </div>
+            
+            <div class="detail-group">
+                <span class="detail-label">Status</span>
+                <span class="detail-value">
+                    <span class="status-badge status-pending" id="paymentStatus">PENDING VERIFICATION</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="timeline-info">
+            <div class="timeline-row">
+                <span class="timeline-label">Submission Date</span>
+                <span class="timeline-value date-time" id="submissionDate">October 8, 2024 at 10:30 PM</span>
+            </div>
+            <div class="timeline-row">
+                <span class="timeline-label">Estimated Completion</span>
+                <span class="timeline-value date-time" id="completionDate">October 10, 2024</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest of the content remains the same -->
+    <div class="info-notice">
+        <h4><i class="fas fa-info-circle"></i> Important Information</h4>
+        <p>Your payment will be reviewed by our staff and processed via SWIFT. You will be notified once the payment has been completed. This process typically takes 1-2 business days.</p>
+    </div>    
+                    <div class="action-buttons">
+                        <a href="customer-dashboard.html" class="btn btn-primary">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Back to Dashboard
+                        </a>
+                        <button class="btn btn-outline" id="printReceiptBtn">
+                            <i class="fas fa-print"></i>
+                            Print Receipt
+                        </button>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="next-steps">
+                        <h4>What Happens Next?</h4>
+                        <ul class="steps-list">
+                            <li>
+                                <i class="fas fa-search"></i>
+                                <div>
+                                    <strong>Verification</strong> - Our team will verify your payment details and beneficiary information
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-double"></i>
+                                <div>
+                                    <strong>Approval</strong> - Payment will be approved and queued for processing
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-paper-plane"></i>
+                                <div>
+                                    <strong>SWIFT Processing</strong> - Payment will be sent via SWIFT network to the beneficiary bank
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-bell"></i>
+                                <div>
+                                    <strong>Notification</strong> - You will receive email confirmation once completed
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 SecureBank International. All rights reserved.</p>
+            <p>www.securebank.com | Customer Support: 1-800-SECURE-BANK</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // These values will be populated from the database in the backend
+            // For now, we'll use placeholder values that can be easily replaced
+            
+            const paymentData = {
+                amount: '$150.00',
+                beneficiaryName: 'Jane Beneficiary',
+                referenceId: '1757930947925',
+                beneficiaryAccount: '0987654321',
+                swiftCode: 'ABNANL2A',
+                status: 'Pending Verification',
+                submissionDate: new Date().toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                completionDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric'
+                })
+            };
+
+            // Populate the page with payment data
+            document.getElementById('paymentAmount').textContent = paymentData.amount;
+            document.getElementById('beneficiaryName').textContent = paymentData.beneficiaryName;
+            document.getElementById('referenceId').textContent = paymentData.referenceId;
+            document.getElementById('beneficiaryAccount').textContent = paymentData.beneficiaryAccount;
+            document.getElementById('swiftCode').textContent = paymentData.swiftCode;
+            document.getElementById('paymentStatus').textContent = paymentData.status;
+            document.getElementById('submissionDate').textContent = paymentData.submissionDate;
+            document.getElementById('completionDate').textContent = paymentData.completionDate;
+
+            // Print receipt functionality
+            document.getElementById('printReceiptBtn').addEventListener('click', function() {
+                const printContent = `
+                    <div style="font-family: Arial, sans-serif; padding: 20px;">
+                        <h2 style="color: #1a3a8f; text-align: center;">SecureBank International</h2>
+                        <h3 style="text-align: center;">Payment Receipt</h3>
+                        <hr>
+                        <div style="margin: 20px 0;">
+                            <p><strong>Reference ID:</strong> ${paymentData.referenceId}</p>
+                            <p><strong>Amount:</strong> ${paymentData.amount}</p>
+                            <p><strong>Beneficiary:</strong> ${paymentData.beneficiaryName}</p>
+                            <p><strong>Account:</strong> ${paymentData.beneficiaryAccount}</p>
+                            <p><strong>SWIFT Code:</strong> ${paymentData.swiftCode}</p>
+                            <p><strong>Status:</strong> ${paymentData.status}</p>
+                            <p><strong>Date:</strong> ${paymentData.submissionDate}</p>
+                        </div>
+                        <hr>
+                        <p style="text-align: center; color: #666; font-size: 12px;">
+                            This is an automated receipt. Please keep for your records.
+                        </p>
+                    </div>
+                `;
+
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Payment Receipt - ${paymentData.referenceId}</title>
+                        </head>
+                        <body>${printContent}</body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.print();
+            });
+
+            // Logout functionality
+            const logoutButtons = document.querySelectorAll('.logout-btn, #sidebarLogout');
+            logoutButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to logout?')) {
+                        alert('You have been logged out successfully.');
+                        window.location.href = 'customer-login.html';
+                    }
+                });
+            });
+
+            // Simulate real-time status updates (would be replaced with WebSocket/API calls)
+            function simulateStatusUpdate() {
+                // In a real application, this would connect to a WebSocket or poll an API
+                console.log('Monitoring payment status...');
+                
+                // Example of how status could be updated from the backend
+                setTimeout(() => {
+                    // This would come from the database/backend
+                    // const newStatus = getPaymentStatusFromAPI(paymentData.referenceId);
+                    // updatePaymentStatus(newStatus);
+                }, 5000);
+            }
+
+            // Function to update payment status (to be called from backend)
+            window.updatePaymentStatus = function(newStatus, newStatusClass = 'status-pending') {
+                const statusElement = document.getElementById('paymentStatus');
+                statusElement.textContent = newStatus;
+                statusElement.className = `status-badge ${newStatusClass}`;
+                
+                // Show notification if status changes
+                if (newStatus !== 'Pending Verification') {
+                    alert(`Payment status updated: ${newStatus}`);
+                }
+            };
+
+            // Function to update payment data (to be called from backend)
+            window.updatePaymentData = function(newData) {
+                Object.keys(newData).forEach(key => {
+                    if (paymentData.hasOwnProperty(key)) {
+                        paymentData[key] = newData[key];
+                        const element = document.getElementById(key);
+                        if (element) {
+                            element.textContent = newData[key];
+                        }
+                    }
+                });
+            };
+
+            // Start monitoring for status updates
+            simulateStatusUpdate();
+
+            // Add loading animation for data that might come from API
+            const loadingElements = document.querySelectorAll('#submissionDate, #completionDate');
+            loadingElements.forEach(element => {
+                element.style.opacity = '0.7';
+                element.style.fontStyle = 'italic';
+            });
+
+            // Simulate API data loading
+            setTimeout(() => {
+                loadingElements.forEach(element => {
+                    element.style.opacity = '1';
+                    element.style.fontStyle = 'normal';
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
