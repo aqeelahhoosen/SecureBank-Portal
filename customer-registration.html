@@ -68,6 +68,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             color: #666;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
         }
         
         .tab.active {
@@ -113,10 +115,31 @@
             margin-top: 5px;
             display: none;
         }
+
+        .submit-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
+
+        .submit-success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
         
         .password-strength {
             margin-top: 5px;
             font-size: 0.85rem;
+            font-weight: 500;
         }
         
         .strength-weak {
@@ -145,13 +168,20 @@
             margin-top: 10px;
         }
         
-        .register-btn:hover {
+        .register-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(26, 58, 143, 0.3);
         }
         
         .register-btn:active {
             transform: translateY(0);
+        }
+
+        .register-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
         .login-link {
@@ -193,6 +223,21 @@
             font-size: 0.9rem;
             margin: 0;
             line-height: 1.5;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         @media (max-width: 768px) {
@@ -247,8 +292,8 @@
                     </div>
                     
                     <div class="form-tabs">
-                        <button class="tab" onclick="window.location.href='customer-login.html'">Login</button>
-                        <button class="tab active">Register</button>
+                        <a href="customer-login.html" class="tab">Login</a>
+                        <a href="#" class="tab active">Register</a>
                     </div>
                     
                     <div class="form-note">
@@ -256,6 +301,9 @@
                     </div>
                     
                     <form id="registrationForm">
+                        <div class="submit-error" id="submitError"></div>
+                        <div class="submit-success" id="submitSuccess"></div>
+                        
                         <div class="form-group">
                             <label for="fullName">Full Name *</label>
                             <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
@@ -293,7 +341,9 @@
                             <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
                         </div>
                         
-                        <button type="submit" class="register-btn">Register Account</button>
+                        <button type="submit" class="register-btn" id="registerButton">
+                            <span id="registerButtonText">Register Account</span>
+                        </button>
                     </form>
                     
                     <div class="login-link">
@@ -312,15 +362,197 @@
     </div>
 
     <script>
+        // API Service Class
+        class BankApiService {
+            constructor() {
+                this.baseUrl = 'https://localhost:7000/api';
+                this.token = localStorage.getItem('auth_token');
+            }
+
+            async request(endpoint, options = {}) {
+                const url = `${this.baseUrl}${endpoint}`;
+                
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                };
+
+                if (this.token) {
+                    config.headers['Authorization'] = `Bearer ${this.token}`;
+                }
+
+                try {
+                    const response = await fetch(url, config);
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                    }
+
+                    return await response.json();
+                } catch (error) {
+                    console.error('API request failed:', error);
+                    throw error;
+                }
+            }
+
+            async register(userData) {
+                return await this.request('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify(userData)
+                });
+            }
+        }
+
+        // Create global instance
+        const bankApi = new BankApiService();
+
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('registrationForm');
             const passwordInput = document.getElementById('password');
             const confirmPasswordInput = document.getElementById('confirmPassword');
             const passwordStrength = document.getElementById('passwordStrength');
+            const registerButton = document.getElementById('registerButton');
+            const registerButtonText = document.getElementById('registerButtonText');
+            const submitError = document.getElementById('submitError');
+            const submitSuccess = document.getElementById('submitSuccess');
             
             // Password strength checker
             passwordInput.addEventListener('input', function() {
                 const password = this.value;
+                updatePasswordStrength(password);
+            });
+            
+            // Real-time password confirmation check
+            confirmPasswordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                const confirmPassword = this.value;
+                
+                if (confirmPassword && password !== confirmPassword) {
+                    showError('confirmPasswordError', 'Passwords do not match');
+                    this.classList.add('error');
+                } else {
+                    hideError('confirmPasswordError');
+                    this.classList.remove('error');
+                }
+            });
+            
+            // Form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                clearMessages();
+                
+                if (validateForm()) {
+                    setLoadingState(true);
+                    
+                    try {
+                        const userData = {
+                            fullName: document.getElementById('fullName').value.trim(),
+                            idNumber: document.getElementById('idNumber').value.trim(),
+                            accountNumber: document.getElementById('accountNumber').value.trim(),
+                            username: document.getElementById('username').value.trim(),
+                            password: document.getElementById('password').value
+                        };
+
+                        const response = await bankApi.register(userData);
+                        
+                        if (response.message === 'Registration successful') {
+                            showSuccess('Registration successful! Your account has been created. Redirecting to login...');
+                            
+                            // Redirect to login after short delay
+                            setTimeout(() => {
+                                window.location.href = 'customer-login.html';
+                            }, 2000);
+                            
+                        } else {
+                            throw new Error(response.message || 'Registration failed');
+                        }
+                    } catch (error) {
+                        setLoadingState(false);
+                        showError('submitError', error.message || 'Registration failed. Please try again.');
+                    }
+                }
+            });
+            
+            function validateForm() {
+                let isValid = true;
+                
+                // Full Name validation
+                const fullName = document.getElementById('fullName').value.trim();
+                if (fullName.length < 2) {
+                    showError('fullNameError', 'Please enter your full name (min 2 characters)');
+                    isValid = false;
+                } else if (!/^[a-zA-Z\s]{2,50}$/.test(fullName)) {
+                    showError('fullNameError', 'Full name can only contain letters and spaces');
+                    isValid = false;
+                } else {
+                    hideError('fullNameError');
+                }
+                
+                // ID Number validation
+                const idNumber = document.getElementById('idNumber').value.trim();
+                if (idNumber.length < 6) {
+                    showError('idNumberError', 'ID number must be at least 6 characters');
+                    isValid = false;
+                } else if (!/^[a-zA-Z0-9]{6,20}$/.test(idNumber)) {
+                    showError('idNumberError', 'ID number can only contain letters and numbers');
+                    isValid = false;
+                } else {
+                    hideError('idNumberError');
+                }
+                
+                // Account Number validation
+                const accountNumber = document.getElementById('accountNumber').value.trim();
+                if (accountNumber.length < 10 || accountNumber.length > 15) {
+                    showError('accountNumberError', 'Account number must be 10-15 digits');
+                    isValid = false;
+                } else if (!/^\d+$/.test(accountNumber)) {
+                    showError('accountNumberError', 'Account number can only contain numbers');
+                    isValid = false;
+                } else {
+                    hideError('accountNumberError');
+                }
+                
+                // Username validation
+                const username = document.getElementById('username').value.trim();
+                if (username.length < 3) {
+                    showError('usernameError', 'Username must be at least 3 characters');
+                    isValid = false;
+                } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+                    showError('usernameError', 'Username can only contain letters, numbers, and underscores');
+                    isValid = false;
+                } else {
+                    hideError('usernameError');
+                }
+                
+                // Password validation
+                const password = document.getElementById('password').value;
+                if (password.length < 8) {
+                    showError('passwordError', 'Password must be at least 8 characters');
+                    isValid = false;
+                } else if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) {
+                    showError('passwordError', 'Password must contain both letters and numbers');
+                    isValid = false;
+                } else {
+                    hideError('passwordError');
+                }
+                
+                // Confirm Password validation
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (password !== confirmPassword) {
+                    showError('confirmPasswordError', 'Passwords do not match');
+                    isValid = false;
+                } else {
+                    hideError('confirmPasswordError');
+                }
+                
+                return isValid;
+            }
+            
+            function updatePasswordStrength(password) {
                 let strength = '';
                 let strengthClass = '';
                 
@@ -356,118 +588,77 @@
                 } else {
                     passwordStrength.textContent = '';
                 }
-            });
-            
-            // Real-time password confirmation check
-            confirmPasswordInput.addEventListener('input', function() {
-                const password = passwordInput.value;
-                const confirmPassword = this.value;
-                
-                if (confirmPassword && password !== confirmPassword) {
-                    showError('confirmPasswordError', 'Passwords do not match');
-                    this.classList.add('error');
-                } else {
-                    hideError('confirmPasswordError');
-                    this.classList.remove('error');
-                }
-            });
-            
-            // Form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                if (validateForm()) {
-                    // Simulate registration process
-                    const registerBtn = form.querySelector('.register-btn');
-                    registerBtn.textContent = 'Creating Account...';
-                    registerBtn.disabled = true;
-                    
-                    setTimeout(() => {
-                        alert('Registration successful! Your account has been created. You can now login.');
-                        window.location.href = 'customer-login.html';
-                    }, 2000);
-                }
-            });
-            
-            function validateForm() {
-                let isValid = true;
-                
-                // Full Name validation
-                const fullName = document.getElementById('fullName').value.trim();
-                if (fullName.length < 2) {
-                    showError('fullNameError', 'Please enter your full name');
-                    isValid = false;
-                } else {
-                    hideError('fullNameError');
-                }
-                
-                // ID Number validation
-                const idNumber = document.getElementById('idNumber').value.trim();
-                if (idNumber.length < 5) {
-                    showError('idNumberError', 'Please enter a valid ID number');
-                    isValid = false;
-                } else {
-                    hideError('idNumberError');
-                }
-                
-                // Account Number validation
-                const accountNumber = document.getElementById('accountNumber').value.trim();
-                if (accountNumber.length < 8 || !/^\d+$/.test(accountNumber)) {
-                    showError('accountNumberError', 'Please enter a valid account number');
-                    isValid = false;
-                } else {
-                    hideError('accountNumberError');
-                }
-                
-                // Username validation
-                const username = document.getElementById('username').value.trim();
-                if (username.length < 4) {
-                    showError('usernameError', 'Username must be at least 4 characters');
-                    isValid = false;
-                } else {
-                    hideError('usernameError');
-                }
-                
-                // Password validation
-                const password = document.getElementById('password').value;
-                if (password.length < 8) {
-                    showError('passwordError', 'Password must be at least 8 characters');
-                    isValid = false;
-                } else if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) {
-                    showError('passwordError', 'Password must contain both letters and numbers');
-                    isValid = false;
-                } else {
-                    hideError('passwordError');
-                }
-                
-                // Confirm Password validation
-                const confirmPassword = document.getElementById('confirmPassword').value;
-                if (password !== confirmPassword) {
-                    showError('confirmPasswordError', 'Passwords do not match');
-                    isValid = false;
-                } else {
-                    hideError('confirmPasswordError');
-                }
-                
-                return isValid;
             }
             
             function showError(errorElementId, message) {
                 const errorElement = document.getElementById(errorElementId);
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                    
+                    // For input fields, add error class to the input
+                    const inputElement = document.getElementById(errorElementId.replace('Error', ''));
+                    if (inputElement) {
+                        inputElement.classList.add('error');
+                    }
+                }
             }
             
             function hideError(errorElementId) {
                 const errorElement = document.getElementById(errorElementId);
-                errorElement.style.display = 'none';
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                    
+                    // Remove error class from input
+                    const inputElement = document.getElementById(errorElementId.replace('Error', ''));
+                    if (inputElement) {
+                        inputElement.classList.remove('error');
+                    }
+                }
+            }
+
+            function showError(elementId, message) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = message;
+                    element.style.display = 'block';
+                }
+            }
+
+            function showSuccess(message) {
+                submitSuccess.textContent = message;
+                submitSuccess.style.display = 'block';
+            }
+
+            function clearMessages() {
+                submitError.style.display = 'none';
+                submitSuccess.style.display = 'none';
+                submitError.textContent = '';
+                submitSuccess.textContent = '';
+            }
+
+            function setLoadingState(isLoading) {
+                if (isLoading) {
+                    registerButton.disabled = true;
+                    registerButtonText.innerHTML = '<div class="loading-spinner"></div> Creating Account...';
+                } else {
+                    registerButton.disabled = false;
+                    registerButtonText.textContent = 'Register Account';
+                }
             }
             
             // Add input event listeners for real-time validation
             const inputs = form.querySelectorAll('input');
             inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const errorId = this.id + 'Error';
+                    if (this.value.trim()) {
+                        hideError(errorId);
+                    }
+                    clearMessages();
+                });
+                
                 input.addEventListener('blur', function() {
-                    // Trigger validation when user leaves the field
                     if (this.value.trim()) {
                         validateField(this);
                     }
@@ -481,27 +672,35 @@
                     case 'fullName':
                         if (value.length < 2) {
                             showError('fullNameError', 'Please enter your full name');
+                        } else if (!/^[a-zA-Z\s]{2,50}$/.test(value)) {
+                            showError('fullNameError', 'Full name can only contain letters and spaces');
                         } else {
                             hideError('fullNameError');
                         }
                         break;
                     case 'idNumber':
-                        if (value.length < 5) {
-                            showError('idNumberError', 'Please enter a valid ID number');
+                        if (value.length < 6) {
+                            showError('idNumberError', 'ID number must be at least 6 characters');
+                        } else if (!/^[a-zA-Z0-9]{6,20}$/.test(value)) {
+                            showError('idNumberError', 'ID number can only contain letters and numbers');
                         } else {
                             hideError('idNumberError');
                         }
                         break;
                     case 'accountNumber':
-                        if (value.length < 8 || !/^\d+$/.test(value)) {
-                            showError('accountNumberError', 'Please enter a valid account number');
+                        if (value.length < 10 || value.length > 15) {
+                            showError('accountNumberError', 'Account number must be 10-15 digits');
+                        } else if (!/^\d+$/.test(value)) {
+                            showError('accountNumberError', 'Account number can only contain numbers');
                         } else {
                             hideError('accountNumberError');
                         }
                         break;
                     case 'username':
-                        if (value.length < 4) {
-                            showError('usernameError', 'Username must be at least 4 characters');
+                        if (value.length < 3) {
+                            showError('usernameError', 'Username must be at least 3 characters');
+                        } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(value)) {
+                            showError('usernameError', 'Username can only contain letters, numbers, and underscores');
                         } else {
                             hideError('usernameError');
                         }

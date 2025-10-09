@@ -120,6 +120,16 @@
             margin-top: 5px;
             display: none;
         }
+
+        .submit-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
         
         .login-btn {
             width: 100%;
@@ -136,13 +146,20 @@
             margin-bottom: 20px;
         }
         
-        .login-btn:hover {
+        .login-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(26, 58, 143, 0.3);
         }
         
         .login-btn:active {
             transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
         .form-links {
@@ -228,6 +245,21 @@
             margin: 0;
             line-height: 1.5;
         }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
         
         @media (max-width: 768px) {
             .login-form {
@@ -296,6 +328,8 @@
                     </div>
                     
                     <form id="customerLoginForm">
+                        <div class="submit-error" id="submitError"></div>
+                        
                         <div class="form-group">
                             <label for="username">Username *</label>
                             <input type="text" id="username" name="username" required placeholder="Enter your username">
@@ -314,7 +348,9 @@
                             <div class="error-message" id="passwordError">Please enter your password</div>
                         </div>
                         
-                        <button type="submit" class="login-btn">Login to Customer Portal</button>
+                        <button type="submit" class="login-btn" id="loginButton">
+                            <span id="loginButtonText">Login to Customer Portal</span>
+                        </button>
                         
                         <div class="form-links">
                             <a href="#">Forgot Password?</a>
@@ -338,63 +374,169 @@
     </div>
 
     <script>
+        // API Service Class
+        class BankApiService {
+            constructor() {
+                this.baseUrl = 'https://localhost:7000/api';
+                this.token = localStorage.getItem('auth_token');
+
+               
+            }
+
+            setToken(token) {
+                this.token = token;
+                localStorage.setItem('auth_token', token);
+            }
+
+            clearToken() {
+                this.token = null;
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('user_data');
+            }
+
+            async request(endpoint, options = {}) {
+                const url = `${this.baseUrl}${endpoint}`;
+                
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                };
+
+                if (this.token) {
+                    config.headers['Authorization'] = `Bearer ${this.token}`;
+                }
+
+                try {
+                    const response = await fetch(url, config);
+                    
+                    if (response.status === 401) {
+                        this.clearToken();
+                        window.location.href = 'customer-login.html';
+                        return;
+                    }
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                    }
+
+                    return await response.json();
+                } catch (error) {
+                    console.error('API request failed:', error);
+                    throw error;
+                }
+            }
+
+            async login(loginData) {
+                const response = await this.request('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify(loginData)
+                });
+
+                if (response.token) {
+                    this.setToken(response.token);
+                    localStorage.setItem('user_data', JSON.stringify(response.user));
+                }
+
+                return response;
+            }
+        }
+
+        // Create global instance
+        const bankApi = new BankApiService();
+
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('customerLoginForm');
+            const loginButton = document.getElementById('loginButton');
+            const loginButtonText = document.getElementById('loginButtonText');
+            const submitError = document.getElementById('submitError');
+            
+            // Check if user is already logged in
+            if (bankApi.token) {
+                window.location.href = 'customer-dashboard.html';
+            }
             
             // Form submission
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                clearSubmitError();
                 
                 if (validateForm()) {
-                    // Simulate login process
-                    const loginBtn = form.querySelector('.login-btn');
-                    const originalText = loginBtn.textContent;
-                    loginBtn.textContent = 'Logging in...';
-                    loginBtn.disabled = true;
+                    setLoadingState(true);
                     
-                    // Simulate API call
-                    setTimeout(() => {
-                        // For demo purposes, always show success
-                        // In real application, this would validate credentials
-                        alert('Login successful! Welcome to Secure Bank International.');
-                        window.location.href = 'customer-dashboard.html'; // Redirect to dashboard
-                    }, 1500);
+                    try {
+                        const loginData = {
+                            username: document.getElementById('username').value.trim(),
+                            accountNumber: document.getElementById('accountNumber').value.trim(),
+                            password: document.getElementById('password').value
+                        };
+
+                        const response = await bankApi.login(loginData);
+                        
+                        if (response.message === 'Login successful') {
+                            // Store user data
+                            localStorage.setItem('user_data', JSON.stringify(response.user));
+                            
+                            // Show success message
+                            showSubmitSuccess('Login successful! Redirecting...');
+                            
+                            // Redirect to dashboard after short delay
+                            setTimeout(() => {
+                                window.location.href = 'customer-dashboard.html';
+                            }, 1000);
+                            
+                        } else {
+                            throw new Error(response.message || 'Login failed');
+                        }
+                    } catch (error) {
+                        setLoadingState(false);
+                        showSubmitError(error.message || 'Login failed. Please check your credentials and try again.');
+                    }
                 }
             });
             
             function validateForm() {
                 let isValid = true;
-                
-                // Username validation
                 const username = document.getElementById('username').value.trim();
-                if (username.length === 0) {
+                const accountNumber = document.getElementById('accountNumber').value.trim();
+                const password = document.getElementById('password').value;
+
+                // Username validation
+                if (!username) {
                     showError('usernameError', 'Please enter your username');
+                    isValid = false;
+                } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+                    showError('usernameError', 'Username must be 3-20 characters (letters, numbers, underscores only)');
                     isValid = false;
                 } else {
                     hideError('usernameError');
                 }
-                
+
                 // Account Number validation
-                const accountNumber = document.getElementById('accountNumber').value.trim();
-                if (accountNumber.length === 0) {
+                if (!accountNumber) {
                     showError('accountNumberError', 'Please enter your account number');
                     isValid = false;
-                } else if (!/^\d+$/.test(accountNumber)) {
-                    showError('accountNumberError', 'Please enter a valid account number');
+                } else if (!/^\d{10,15}$/.test(accountNumber)) {
+                    showError('accountNumberError', 'Please enter a valid 10-15 digit account number');
                     isValid = false;
                 } else {
                     hideError('accountNumberError');
                 }
-                
+
                 // Password validation
-                const password = document.getElementById('password').value;
-                if (password.length === 0) {
+                if (!password) {
                     showError('passwordError', 'Please enter your password');
+                    isValid = false;
+                } else if (password.length < 8) {
+                    showError('passwordError', 'Password must be at least 8 characters');
                     isValid = false;
                 } else {
                     hideError('passwordError');
                 }
-                
+
                 return isValid;
             }
             
@@ -402,17 +544,52 @@
                 const errorElement = document.getElementById(errorElementId);
                 const inputElement = document.getElementById(errorElementId.replace('Error', ''));
                 
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
-                inputElement.classList.add('error');
+                if (errorElement && inputElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                    inputElement.classList.add('error');
+                }
             }
             
             function hideError(errorElementId) {
                 const errorElement = document.getElementById(errorElementId);
                 const inputElement = document.getElementById(errorElementId.replace('Error', ''));
                 
-                errorElement.style.display = 'none';
-                inputElement.classList.remove('error');
+                if (errorElement && inputElement) {
+                    errorElement.style.display = 'none';
+                    inputElement.classList.remove('error');
+                }
+            }
+
+            function showSubmitError(message) {
+                submitError.textContent = message;
+                submitError.style.display = 'block';
+                submitError.style.background = '#f8d7da';
+                submitError.style.color = '#721c24';
+                submitError.style.border = '1px solid #f5c6cb';
+            }
+
+            function showSubmitSuccess(message) {
+                submitError.textContent = message;
+                submitError.style.display = 'block';
+                submitError.style.background = '#d4edda';
+                submitError.style.color = '#155724';
+                submitError.style.border = '1px solid #c3e6cb';
+            }
+
+            function clearSubmitError() {
+                submitError.style.display = 'none';
+                submitError.textContent = '';
+            }
+
+            function setLoadingState(isLoading) {
+                if (isLoading) {
+                    loginButton.disabled = true;
+                    loginButtonText.innerHTML = '<div class="loading-spinner"></div> Logging in...';
+                } else {
+                    loginButton.disabled = false;
+                    loginButtonText.textContent = 'Login to Customer Portal';
+                }
             }
             
             // Real-time validation on input
@@ -423,12 +600,13 @@
                     if (this.value.trim()) {
                         hideError(errorId);
                     }
+                    clearSubmitError();
                 });
                 
                 input.addEventListener('blur', function() {
                     if (this.id === 'accountNumber' && this.value.trim()) {
                         if (!/^\d+$/.test(this.value.trim())) {
-                            showError(this.id + 'Error', 'Please enter a valid account number');
+                            showError(this.id + 'Error', 'Please enter a valid account number (digits only)');
                         }
                     }
                 });
@@ -440,6 +618,17 @@
                     form.dispatchEvent(new Event('submit'));
                 }
             });
+
+            // Demo credentials helper (remove in production)
+            function showDemoCredentials() {
+                console.log('Demo Credentials:');
+                console.log('Username: demo_user');
+                console.log('Account Number: 1234567890');
+                console.log('Password: Demo123!');
+            }
+
+            // Uncomment the line below to enable demo credentials in console
+            // showDemoCredentials();
         });
     </script>
 </body>

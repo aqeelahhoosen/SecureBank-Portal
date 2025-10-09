@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* All your existing CSS styles remain the same */
         body {
         background-color: #F5F6F7 !important;
         font-family: 'Inter', sans-serif;
@@ -36,7 +37,7 @@
     }
 
     .welcome-section h1 {
-        color: #B8E3E9; /* Updated to light blue */
+        color: #B8E3E9;
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 10px;
@@ -49,8 +50,8 @@
     }
 
     .user-info {
-        background: #B8E3E9; /* Updated to light blue */
-        color: #333; /* Dark text for contrast */
+        background: #B8E3E9;
+        color: #333;
         padding: 25px;
         border-radius: 10px;
         display: flex;
@@ -62,13 +63,13 @@
         font-size: 1.5rem;
         font-weight: 600;
         margin-bottom: 5px;
-        color: #333; /* Dark text for contrast */
+        color: #333;
     }
 
     .user-details .account-number {
         font-size: 1.1rem;
         opacity: 0.9;
-        color: #333; /* Dark text for contrast */
+        color: #333;
     }
 
     .quick-actions {
@@ -77,8 +78,8 @@
     }
 
     .action-btn {
-        background: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
-        color: #333; /* Dark text for contrast */
+        background: rgba(255, 255, 255, 0.7);
+        color: #333;
         border: none;
         padding: 10px 20px;
         border-radius: 6px;
@@ -109,7 +110,7 @@
     }
 
     .payment-card h3 {
-        color: #B8E3E9; /* Updated to light blue */
+        color: #B8E3E9;
         font-size: 1.5rem;
         font-weight: 600;
         margin-bottom: 20px;
@@ -119,7 +120,7 @@
     }
 
     .payment-card h3 i {
-        color: #B8E3E9; /* Updated to light blue */
+        color: #B8E3E9;
     }
 
     .payment-description {
@@ -135,8 +136,8 @@
     }
 
     .payment-btn {
-        background: #B8E3E9; /* Updated to light blue */
-        color: #333; /* Dark text for contrast */
+        background: #B8E3E9;
+        color: #333;
         border: none;
         padding: 15px 30px;
         border-radius: 10px;
@@ -150,7 +151,7 @@
     .payment-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(184, 227, 233, 0.3);
-        background: #A0D8E0; /* Slightly darker shade for hover */
+        background: #A0D8E0;
         color: #333;
     }
 
@@ -164,7 +165,7 @@
     }
 
     .payments-history h3 {
-        color: #B8E3E9; /* Updated to light blue */
+        color: #B8E3E9;
         font-size: 1.5rem;
         font-weight: 600;
         margin-bottom: 20px;
@@ -174,7 +175,7 @@
     }
 
     .payments-history h3 i {
-        color: #B8E3E9; /* Updated to light blue */
+        color: #B8E3E9;
     }
 
         .empty-state {
@@ -384,6 +385,16 @@
                 background-position: -200% 0;
             }
         }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -427,6 +438,9 @@
                 </div>
             </div>
 
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage"></div>
+
             <!-- Account Summary -->
             <div class="account-summary">
                 <div class="summary-card">
@@ -439,303 +453,4 @@
                 </div>
                 <div class="summary-card">
                     <h4>This Month</h4>
-                    <div class="amount" id="monthlyTotal">$0.00</div>
-                </div>
-            </div>
-
-            <!-- Dashboard Content -->
-            <div class="dashboard-content">
-                <!-- International Payments Card -->
-                <div class="payment-card">
-                    <h3><i class="fas fa-globe-americas"></i> International Payments</h3>
-                    <p class="payment-description">
-                        Send secure international payments via SWIFT network. Fast, reliable, and secure transfers to over 200 countries.
-                    </p>
-                    
-                    <div class="divider"></div>
-                    
-                    <button class="payment-btn" onclick="window.location.href='make-payment.html'">Make International Payment</button>
-                </div>
-
-                <!-- Payments History Card -->
-                <div class="payments-history">
-                    <h3><i class="fas fa-exchange-alt"></i> My Payments</h3>
-                    
-                    <!-- Empty State -->
-                    <div class="empty-state" id="emptyState">
-                        <i class="fas fa-receipt"></i>
-                        <h4>No payments made yet</h4>
-                        <p>Your payment history will appear here once you start making international transfers.</p>
-                    </div>
-
-                    <!-- Payment List -->
-                    <div class="payment-list" id="paymentList">
-                        <!-- Payment items will be dynamically inserted here -->
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <footer class="footer">
-            <p>&copy; 2024 SecureBank International. All rights reserved.</p>
-            <p>www.securebank.com | Customer Support: 1-800-SECURE-BANK</p>
-        </footer>
-    </div>
-
-    <script>
-        // Customer data structure - This will be populated from your database
-        const customerData = {
-            customerId: 'CUST001',
-            firstName: 'John',
-            lastName: 'Customer',
-            accountNumber: '1234567890',
-            availableBalance: 45230.50,
-            pendingTransactions: 2500.00,
-            monthlyTotal: 15000.00,
-            currency: 'USD'
-        };
-
-        // Payment history data - This will come from your database
-        const paymentHistory = [
-            {
-                id: 'PAY001',
-                beneficiary: 'Jane Beneficiary',
-                accountNumber: '0987654321',
-                amount: 150.00,
-                currency: 'USD',
-                date: '2024-01-15',
-                status: 'completed',
-                swiftCode: 'ABNANL2A'
-            },
-            {
-                id: 'PAY002',
-                beneficiary: 'ABC Corporation',
-                accountNumber: '1122334455',
-                amount: 2500.00,
-                currency: 'USD',
-                date: '2024-01-10',
-                status: 'pending',
-                swiftCode: 'BOFAUS3N'
-            },
-            {
-                id: 'PAY003',
-                beneficiary: 'Global Imports Ltd',
-                accountNumber: '6677889900',
-                amount: 1800.50,
-                currency: 'USD',
-                date: '2024-01-05',
-                status: 'processing',
-                swiftCode: 'CITIUS33'
-            }
-        ];
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize dashboard with customer data
-            initializeDashboard();
-
-            // Logout functionality
-            const logoutBtn = document.querySelector('.logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function() {
-                    if (confirm('Are you sure you want to logout?')) {
-                        alert('You have been logged out successfully.');
-                        window.location.href = 'customer-login.html';
-                    }
-                });
-            }
-
-            // Quick actions functionality
-            const actionBtns = document.querySelectorAll('.action-btn');
-            actionBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const action = this.textContent.toLowerCase();
-                    
-                    switch(action) {
-                        case 'profile':
-                            alert('Opening profile settings...');
-                            break;
-                        case 'help':
-                            alert('Opening help center...');
-                            break;
-                    }
-                });
-            });
-
-            // Function to update customer data from backend
-            window.updateCustomerData = function(newData) {
-                Object.keys(newData).forEach(key => {
-                    if (customerData.hasOwnProperty(key)) {
-                        customerData[key] = newData[key];
-                    }
-                });
-                updateDashboardUI();
-            };
-
-            // Function to update payment history from backend
-            window.updatePaymentHistory = function(newPayments) {
-                paymentHistory.length = 0; // Clear existing payments
-                paymentHistory.push(...newPayments);
-                renderPaymentHistory();
-            };
-
-            // Function to add a new payment to history
-            window.addNewPayment = function(payment) {
-                paymentHistory.unshift(payment); // Add to beginning
-                renderPaymentHistory();
-            };
-        });
-
-        function initializeDashboard() {
-            // Show loading state
-            document.body.classList.add('loading');
-
-            // Simulate API call to fetch customer data
-            setTimeout(() => {
-                updateDashboardUI();
-                renderPaymentHistory();
-                document.body.classList.remove('loading');
-            }, 1000);
-        }
-
-        function updateDashboardUI() {
-            // Update user information
-            const fullName = `${customerData.firstName} ${customerData.lastName}`;
-            document.getElementById('headerUserName').textContent = `Hello, ${customerData.firstName}`;
-            document.getElementById('welcomeUserName').textContent = `Hello, ${fullName}`;
-            document.getElementById('userAccountNumber').textContent = `Account: ${customerData.accountNumber}`;
-
-            // Update account summary
-            document.getElementById('availableBalance').textContent = 
-                formatCurrency(customerData.availableBalance, customerData.currency);
-            document.getElementById('pendingTransactions').textContent = 
-                formatCurrency(customerData.pendingTransactions, customerData.currency);
-            document.getElementById('monthlyTotal').textContent = 
-                formatCurrency(customerData.monthlyTotal, customerData.currency);
-        }
-
-        function renderPaymentHistory() {
-            const emptyState = document.getElementById('emptyState');
-            const paymentList = document.getElementById('paymentList');
-            const paymentListContainer = document.querySelector('.payment-list');
-
-            if (paymentHistory.length === 0) {
-                emptyState.classList.remove('hidden');
-                paymentListContainer.classList.remove('visible');
-                return;
-            }
-
-            emptyState.classList.add('hidden');
-            paymentListContainer.classList.add('visible');
-
-            // Clear existing payment list
-            paymentList.innerHTML = '';
-
-            // Add payment items
-            paymentHistory.forEach(payment => {
-                const paymentItem = createPaymentItem(payment);
-                paymentList.appendChild(paymentItem);
-            });
-        }
-
-        function createPaymentItem(payment) {
-            const item = document.createElement('div');
-            item.className = 'payment-item';
-            item.setAttribute('data-payment-id', payment.id);
-
-            const statusClass = getStatusClass(payment.status);
-            const statusText = getStatusText(payment.status);
-            const formattedDate = formatDate(payment.date);
-
-            item.innerHTML = `
-                <div class="payment-info">
-                    <div class="payment-beneficiary">${payment.beneficiary}</div>
-                    <div class="payment-details">
-                        ${payment.accountNumber} • ${formattedDate} • ${payment.swiftCode}
-                    </div>
-                </div>
-                <div class="payment-amount">
-                    <div class="amount">${formatCurrency(payment.amount, payment.currency)}</div>
-                    <div class="payment-status ${statusClass}">${statusText}</div>
-                </div>
-            `;
-
-            // Add click event to view payment details
-            item.addEventListener('click', function() {
-                viewPaymentDetails(payment.id);
-            });
-
-            return item;
-        }
-
-        function getStatusClass(status) {
-            switch(status) {
-                case 'completed': return 'status-completed';
-                case 'pending': return 'status-pending';
-                case 'processing': return 'status-processing';
-                case 'failed': return 'status-failed';
-                default: return 'status-pending';
-            }
-        }
-
-        function getStatusText(status) {
-            switch(status) {
-                case 'completed': return 'Completed';
-                case 'pending': return 'Pending';
-                case 'processing': return 'Processing';
-                case 'failed': return 'Failed';
-                default: return 'Pending';
-            }
-        }
-
-        function formatCurrency(amount, currency) {
-            const formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: currency,
-                minimumFractionDigits: 2
-            });
-            return formatter.format(amount);
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-        }
-
-        function viewPaymentDetails(paymentId) {
-            // In a real application, this would navigate to a payment details page
-            // or show a modal with payment information
-            const payment = paymentHistory.find(p => p.id === paymentId);
-            if (payment) {
-                alert(`Payment Details:\n
-                Beneficiary: ${payment.beneficiary}
-                Amount: ${formatCurrency(payment.amount, payment.currency)}
-                Status: ${getStatusText(payment.status)}
-                Date: ${formatDate(payment.date)}
-                SWIFT: ${payment.swiftCode}
-                Account: ${payment.accountNumber}`);
-            }
-        }
-
-        // Simulate real-time updates (would be replaced with WebSocket/API calls)
-        function simulateRealTimeUpdates() {
-            setInterval(() => {
-                // Simulate balance updates
-                const balanceChange = (Math.random() - 0.5) * 100;
-                customerData.availableBalance += balanceChange;
-                customerData.availableBalance = Math.max(0, customerData.availableBalance);
-                
-                // Update UI
-                document.getElementById('availableBalance').textContent = 
-                    formatCurrency(customerData.availableBalance, customerData.currency);
-            }, 30000); // Update every 30 seconds
-        }
-
-        // Start real-time updates simulation
-        simulateRealTimeUpdates();
-    </script>
-</body>
-</html>
+                    <div class="amount" id="monthlyTotal">$0.00</
