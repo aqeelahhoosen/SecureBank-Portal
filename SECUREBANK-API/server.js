@@ -17,22 +17,22 @@ app.use(express.json());
 // MongoDB Connection with detailed logging
 const connectDB = async () => {
   try {
-    console.log('🔗 Attempting to connect to MongoDB...');
+    console.log('Attempting to connect to MongoDB...');
     
     // Remove password from log for security
     const safeUri = process.env.MONGODB_URI ? 
       process.env.MONGODB_URI.replace(/mongodb\+srv:\/\/([^:]+):([^@]+)@/, 'mongodb+srv://$1:****@') : 
       'Not configured';
     
-    console.log('📡 Connection URI:', safeUri);
+    console.log('Connection URI:', safeUri);
     
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     
-    console.log('✅ MongoDB Connected Successfully');
-    console.log('📊 Database:', mongoose.connection.db.databaseName);
+    console.log('✅MongoDB Connected Successfully');
+    console.log('Database:', mongoose.connection.db.databaseName);
     return true;
     
   } catch (error) {
@@ -40,13 +40,13 @@ const connectDB = async () => {
     console.error('   Error:', error.message);
     
     if (error.message.includes('bad auth')) {
-      console.error('   🔐 Authentication failed - check username/password');
-      console.error('   💡 Tip: Make sure password is URL encoded if it contains special characters');
+      console.error('    Authentication failed - check username/password');
+      console.error('    Tip: Make sure password is URL encoded if it contains special characters');
     } else if (error.message.includes('getaddrinfo')) {
       console.error('   🌐 Network error - check cluster URL and internet connection');
     }
     
-    console.log('🔄 Starting in MOCK MODE - Data will reset on server restart');
+    console.log('Starting in MOCK MODE - Data will reset on server restart');
     return false;
   }
 };
@@ -199,7 +199,7 @@ app.post('/api/login', async (req, res) => {
 
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
-  console.log(`🚀 Secure Bank API running on port ${PORT}`);
-  console.log(`📊 Mode: ${dbConnected ? 'DATABASE' : 'MOCK DATA'}`);
+  console.log(` Secure Bank API running on port ${PORT}`);
+  console.log(` Mode: ${dbConnected ? 'DATABASE' : 'MOCK DATA'}`);
   console.log(`🔗 Health: http://localhost:${PORT}/api/health`);
 });
