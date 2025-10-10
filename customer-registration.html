@@ -400,7 +400,7 @@
             }
 
             async register(userData) {
-                return await this.request('/auth/register', {
+                return await this.request('/register', {
                     method: 'POST',
                     body: JSON.stringify(userData)
                 });
