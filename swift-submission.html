@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWIFT Transaction Submission - SecureBank International</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #F5F6F7 !important;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #F5F6F7;
+            min-height: 100vh;
+        }
+
+        .submission-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .page-title h1 {
+            color: #B8E3E9;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #B8E3E9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Submission Card */
+        .submission-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e1e5ee;
+        }
+
+        .card-title {
+            color: #B8E3E9;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            background: #B8E3E9;
+            color: #333;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #B8E3E9;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(184, 227, 233, 0.1);
+        }
+
+        .form-input:read-only, .form-select:disabled {
+            background: #f8f9fa;
+            color: #666;
+            border-color: #e1e5ee;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .amount-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .amount-input {
+            flex: 1;
+        }
+
+        .currency-select {
+            width: 120px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e1e5ee;
+            margin: 30px 0;
+        }
+
+        .section-title {
+            color: #B8E3E9;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #B8E3E9;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 160px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #B8E3E9;
+            color: #333;
+        }
+
+        .btn-primary:hover {
+            background: #A0D8E0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 227, 233, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e1e5ee;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        /* Verified Transactions Section */
+        .verified-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e1e5ee;
+        }
+
+        .section-header h3 {
+            color: #B8E3E9;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transactions-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 2px solid #e1e5ee;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .transactions-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e1e5ee;
+            color: #333;
+        }
+
+        .transactions-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .transactions-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge-table {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-verified {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .checkbox-cell {
+            width: 50px;
+            text-align: center;
+        }
+
+        .customer-details {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .submission-container {
+                padding: 15px;
+            }
+
+            .page-header {
+                padding: 20px;
+            }
+
+            .page-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .submission-card {
+                padding: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .amount-group {
+                flex-direction: column;
+            }
+
+            .currency-select {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .transactions-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title h1 {
+                font-size: 1.8rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            .submission-card {
+                padding: 20px;
+            }
+
+            .verified-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <h1>SecureBank<span class="logo-subtitle">International</span></h1>
+                </div>
+                <div class="user-info">
+                    <span>Hello, Sarah Jones</span>
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="employee-dashboard.html">Dashboard</a></li>
+                    <li><a href="#" class="active">Transactions</a></li>
+                    <li><a href="transaction-verification.html">Verification</a></li>
+                    <li><a href="#">Accounts</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="submission-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>SWIFT Transaction Submission</h1>
+                    <div class="breadcrumb">
+                        <a href="employee-dashboard.html">Dashboard</a> 
+                        <i class="fas fa-chevron-right"></i> 
+                        <span>SWIFT Submission</span>
+                    </div>
+                </div>
+                <p class="page-subtitle">Submit verified transactions to SWIFT network for processing</p>
+            </div>
+
+            <!-- Submission Form -->
+            <div class="submission-card">
+                <div class="card-header">
+                    <h2 class="card-title">New SWIFT Transaction</h2>
+                    <div class="status-badge" id="statusBadge">Ready for Submission</div>
+                </div>
+
+                <form id="swiftForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="refId">Reference ID</label>
+                            <input type="text" id="refId" class="form-input" value="1757956430437" readonly>
+                            <div class="form-hint">Automatically generated</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="customer">Customer</label>
+                            <input type="text" id="customer" class="form-input" value="John Customer" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="account">Account Number</label>
+                            <input type="text" id="account" class="form-input" value="1234567890" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="amount">Amount</label>
+                            <div class="amount-group">
+                                <input type="text" id="amount" class="form-input amount-input" value="$350.00" readonly>
+                                <select class="form-select currency-select" disabled>
+                                <option value="">Choose currency</option>
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CHF">CHF - Swiss Franc</option>
+                                <option value="ZAR">ZAR - South African Rand</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="beneficiary">Beneficiary Name</label>
+                            <input type="text" id="beneficiary" class="form-input" value="Jane Beneficiary" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="beneficiaryAccount">Beneficiary Account</label>
+                            <input type="text" id="beneficiaryAccount" class="form-input" value="0907654321" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="swiftCode">SWIFT Code</label>
+                            <input type="text" id="swiftCode" class="form-input" value="ABNANL2A" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="transactionType">Transaction Type</label>
+                            <select id="transactionType" class="form-select" disabled>
+                                <option>Customer Transfer</option>
+                                <option>Bank Transfer</option>
+                                <option>Direct Debit</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label" for="paymentDetails">Payment Details</label>
+                            <textarea id="paymentDetails" class="form-textarea" rows="3" readonly>International wire transfer</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="valueDate">Value Date</label>
+                            <input type="date" id="valueDate" class="form-input" value="2024-09-15" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="chargeOption">Charge Option</label>
+                            <select id="chargeOption" class="form-select" disabled>
+                                <option>SHA - Shared</option>
+                                <option>OUR - Sender Pays</option>
+                                <option>BEN - Beneficiary Pays</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3 class="section-title"><i class="fas fa-info-circle"></i> Additional Information</h3>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="intermediaryBank">Intermediary Bank (if any)</label>
+                            <input type="text" id="intermediaryBank" class="form-input" placeholder="Optional">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="intermediarySwift">Intermediary SWIFT</label>
+                            <input type="text" id="intermediarySwift" class="form-input" placeholder="Optional">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label" for="additionalInfo">Additional Instructions</label>
+                            <textarea id="additionalInfo" class="form-textarea" rows="2" placeholder="Any special instructions for this transaction"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="cancelSubmission()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+                            <i class="fas fa-save"></i> Save Draft
+                        </button>
+                        <button type="button" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-paper-plane"></i> Submit to SWIFT
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Verified Transactions Section -->
+            <div class="verified-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-check-circle"></i> Verified Transactions (1)</h3>
+                </div>
+
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell">Select</th>
+                            <th>Ref ID</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Currency</th>
+                            <th>Beneficiary</th>
+                            <th>SWIFT Code</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="checkbox-cell">
+                                <input type="checkbox" checked>
+                            </td>
+                            <td>1757956430437</td>
+                            <td>
+                                John Customer
+                                <div class="customer-details">1234567890</div>
+                            </td>
+                            <td>$350.00</td>
+                            <td>USD</td>
+                            <td>
+                                Jane Beneficiary
+                                <div class="customer-details">0907654321</div>
+                            </td>
+                            <td>ABNANL2A</td>
+                            <td><span class="status-badge-table status-verified">VERIFIED</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 SecureBank International. All rights reserved.</p>
+            <p>www.securebank.com | Employee Support: 1-800-INTERNAL</p>
+        </footer>
+    </div>
+
+    <script>
+        // Logout functionality
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to logout?')) {
+                alert('You have been logged out successfully.');
+                window.location.href = 'employee-login.html';
+            }
+        });
+
+        // Form submission
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to submit this transaction to SWIFT?')) {
+                // Show loading state
+                const submitBtn = this;
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                submitBtn.disabled = true;
+
+                
+                setTimeout(() => {
+                    alert('Transaction successfully submitted to SWIFT network!');
+                    
+                    // Update status
+                    const statusBadge = document.getElementById('statusBadge');
+                    statusBadge.textContent = 'SWIFT Submitted';
+                    statusBadge.style.background = '#d4edda';
+                    statusBadge.style.color = '#155724';
+                    
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 2000);
+            }
+        });
+
+        function cancelSubmission() {
+            if(confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                window.location.href = 'employee-dashboard.html';
+            }
+        }
+
+        function saveDraft() {
+            alert('Draft saved successfully!');
+            
+        }
+    </script>
+</body>
+</html>
