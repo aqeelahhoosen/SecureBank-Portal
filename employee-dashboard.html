@@ -480,97 +480,84 @@
             </div>
 
             <!-- Transactions Section -->
-            <div class="transactions-section">
-                <div class="section-header">
-                    <h3 class="section-title">
-                        <i class="fas fa-exchange-alt"></i>
-                        Transaction Queue
-                    </h3>
-                    <div class="section-actions">
-                        <button class="action-btn" onclick="refreshTransactions()">
-                            <i class="fas fa-sync-alt"></i> Refresh
-                        </button>
-                    </div>
+            <table class="transactions-table">
+    <thead>
+        <tr>
+            <th>Ref ID</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Beneficiary</th>
+            <th>SWIFT Code</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1757930947925</td>
+            <td>John Customer</td>
+            <td>$150.00</td>
+            <td>USD</td>
+            <td>Jane Beneficiary</td>
+            <td>ABNANL2A</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td>
+                <div class="table-actions">
+                    <button class="table-btn view-btn" onclick="viewTransaction('1757930947925')">View</button>
+                    <button class="table-btn approve-btn" onclick="approveTransaction('1757930947925')">Approve</button>
+                    <button class="table-btn reject-btn" onclick="rejectTransaction('1757930947925')">Reject</button>
                 </div>
-
-                <table class="transactions-table">
-                    <thead>
-                        <tr>
-                            <th>Ref ID</th>
-                            <th>Customer</th>
-                            <th>Amount</th>
-                            <th>Currency</th>
-                            <th>Beneficiary</th>
-                            <th>SWIFT Code</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1757930947925</td>
-                            <td>John Customer</td>
-                            <td>$150.00</td>
-                            <td>USD</td>
-                            <td>Jane Beneficiary</td>
-                            <td>ABNANL2A</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="table-btn view-btn" onclick="viewTransaction('1757930947925')">View</button>
-                                    <button class="table-btn approve-btn" onclick="approveTransaction('1757930947925')">Approve</button>
-                                    <button class="table-btn reject-btn" onclick="rejectTransaction('1757930947925')">Reject</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1757930947926</td>
-                            <td>Michael Johnson</td>
-                            <td>$2,500.00</td>
-                            <td>USD</td>
-                            <td>Global Suppliers Inc</td>
-                            <td>BOFAUS3N</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="table-btn view-btn" onclick="viewTransaction('1757930947926')">View</button>
-                                    <button class="table-btn approve-btn" onclick="approveTransaction('1757930947926')">Approve</button>
-                                    <button class="table-btn reject-btn" onclick="rejectTransaction('1757930947926')">Reject</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1757930947927</td>
-                            <td>Emily Wilson</td>
-                            <td>€850.00</td>
-                            <td>EUR</td>
-                            <td>Robert Schmidt</td>
-                            <td>DEUTDEFF</td>
-                            <td><span class="status-badge status-approved">Approved</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="table-btn view-btn" onclick="viewTransaction('1757930947927')">View</button>
-                                    <button class="table-btn view-btn" onclick="transactionDetails('1757930947927')">Details</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1757930947928</td>
-                            <td>David Brown</td>
-                            <td>£1,200.00</td>
-                            <td>GBP</td>
-                            <td>Sarah Thompson</td>
-                            <td>BARCGB22</td>
-                            <td><span class="status-badge status-rejected">Rejected</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="table-btn view-btn" onclick="viewTransaction('1757930947928')">View</button>
-                                    <button class="table-btn view-btn" onclick="transactionDetails('1757930947928')">Details</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>1757930947926</td>
+            <td>Michael Johnson</td>
+            <td>$2,500.00</td>
+            <td>USD</td>
+            <td>Global Suppliers Inc</td>
+            <td>BOFAUS3N</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td>
+                <div class="table-actions">
+                    <button class="table-btn view-btn" onclick="viewTransaction('1757930947926')">View</button>
+                    <button class="table-btn approve-btn" onclick="approveTransaction('1757930947926')">Approve</button>
+                    <button class="table-btn reject-btn" onclick="rejectTransaction('1757930947926')">Reject</button>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>1757930947927</td>
+            <td>Emily Wilson</td>
+            <td>€850.00</td>
+            <td>EUR</td>
+            <td>Robert Schmidt</td>
+            <td>DEUTDEFF</td>
+            <td><span class="status-badge status-approved">Approved</span></td>
+            <td>
+                <div class="table-actions">
+                    <button class="table-btn view-btn" onclick="viewTransaction('1757930947927')">View</button>
+                    <button class="table-btn view-btn" onclick="transactionDetails('1757930947927')">Details</button>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>1757930947928</td>
+            <td>David Brown</td>
+            <td>£1,200.00</td>
+            <td>GBP</td>
+            <td>Sarah Thompson</td>
+            <td>BARCGB22</td>
+            <td><span class="status-badge status-rejected">Rejected</span></td>
+            <td>
+                <div class="table-actions">
+                    <button class="table-btn view-btn" onclick="viewTransaction('1757930947928')">View</button>
+                    <button class="table-btn view-btn" onclick="transactionDetails('1757930947928')">Details</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
             </div>
         </main>
 
@@ -581,58 +568,112 @@
     </div>
 
     <script>
-        // Logout functionality
-        document.querySelector('.logout-btn').addEventListener('click', function() {
-            if(confirm('Are you sure you want to logout?')) {
-                alert('You have been logged out successfully.');
-                window.location.href = 'employee-login.html';
+    // Logout functionality
+    document.querySelector('.logout-btn').addEventListener('click', function() {
+        if(confirm('Are you sure you want to logout?')) {
+            alert('You have been logged out successfully.');
+            window.location.href = 'employee-login.html';
+        }
+    });
+
+    // Transaction action functions
+    function viewTransaction(refId) {
+        // Store the transaction ID in sessionStorage to use on the verification page
+        sessionStorage.setItem('currentTransactionId', refId);
+        
+        // Navigate to transaction verification page
+        window.location.href = 'transaction-verification.html';
+    }
+
+    function approveTransaction(refId) {
+        if(confirm(`Are you sure you want to approve transaction ${refId}?`)) {
+            alert(`Transaction ${refId} has been approved successfully.`);
+            // In real application, this would update the status via API
+            updateTransactionStatus(refId, 'approved');
+        }
+    }
+
+    function rejectTransaction(refId) {
+        if(confirm(`Are you sure you want to reject transaction ${refId}?`)) {
+            alert(`Transaction ${refId} has been rejected.`);
+            // In real application, this would update the status via API
+            updateTransactionStatus(refId, 'rejected');
+        }
+    }
+
+    function transactionDetails(refId) {
+        // For already processed transactions, still allow viewing details
+        sessionStorage.setItem('currentTransactionId', refId);
+        window.location.href = 'transaction-verification.html';
+    }
+
+    // Function to update transaction status in the UI
+    function updateTransactionStatus(refId, status) {
+        const rows = document.querySelectorAll('.transactions-table tbody tr');
+        rows.forEach(row => {
+            if (row.cells[0].textContent === refId) {
+                const statusCell = row.cells[6];
+                const actionsCell = row.cells[7];
+                
+                if (status === 'approved') {
+                    statusCell.innerHTML = '<span class="status-badge status-approved">Approved</span>';
+                    actionsCell.innerHTML = `
+                        <div class="table-actions">
+                            <button class="table-btn view-btn" onclick="viewTransaction('${refId}')">View</button>
+                            <button class="table-btn view-btn" onclick="transactionDetails('${refId}')">Details</button>
+                        </div>
+                    `;
+                } else if (status === 'rejected') {
+                    statusCell.innerHTML = '<span class="status-badge status-rejected">Rejected</span>';
+                    actionsCell.innerHTML = `
+                        <div class="table-actions">
+                            <button class="table-btn view-btn" onclick="viewTransaction('${refId}')">View</button>
+                            <button class="table-btn view-btn" onclick="transactionDetails('${refId}')">Details</button>
+                        </div>
+                    `;
+                }
             }
         });
+    }
 
-        // Transaction action functions
-        function viewTransaction(refId) {
-            alert(`Viewing transaction details for Reference ID: ${refId}`);
-        }
+    // Quick action functions
+    function viewPendingTransactions() {
+        document.querySelector('.transactions-section').scrollIntoView({ behavior: 'smooth' });
+    }
 
-        function approveTransaction(refId) {
-            if(confirm(`Are you sure you want to approve transaction ${refId}?`)) {
-                alert(`Transaction ${refId} has been approved successfully.`);
-                
-            }
-        }
+    function viewCustomerAccounts() {
+        alert('Opening Customer Accounts management...');
+    }
 
-        function rejectTransaction(refId) {
-            if(confirm(`Are you sure you want to reject transaction ${refId}?`)) {
-                alert(`Transaction ${refId} has been rejected.`);
-                
-            }
-        }
+    function generateReports() {
+        alert('Opening Reports generation...');
+    }
 
-        function transactionDetails(refId) {
-            alert(`Showing detailed information for transaction ${refId}`);
-        }
+    function viewAnalytics() {
+        alert('Opening Analytics dashboard...');
+    }
 
-        // Quick action functions
-        function viewPendingTransactions() {
-            document.querySelector('.transactions-section').scrollIntoView({ behavior: 'smooth' });
-        }
+    function refreshTransactions() {
+        alert('Refreshing transaction data...');
+        // In real application, this would fetch updated data from API
+    }
 
-        function viewCustomerAccounts() {
-            alert('Opening Customer Accounts management...');
-        }
-
-        function generateReports() {
-            alert('Opening Reports generation...');
-        }
-
-        function viewAnalytics() {
-            alert('Opening Analytics dashboard...');
-        }
-
-        function refreshTransactions() {
-            alert('Refreshing transaction data...');
+    // Add click handlers for table rows to make entire row clickable
+    document.addEventListener('DOMContentLoaded', function() {
+        const tableRows = document.querySelectorAll('.transactions-table tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('click', function(e) {
+                // Don't trigger if clicking on action buttons
+                if (!e.target.closest('.table-actions')) {
+                    const refId = this.cells[0].textContent;
+                    viewTransaction(refId);
+                }
+            });
             
-        }
-    </script>
+            // Add hover effect for clickable rows
+            row.style.cursor = 'pointer';
+        });
+    });
+</script>
 </body>
 </html>
