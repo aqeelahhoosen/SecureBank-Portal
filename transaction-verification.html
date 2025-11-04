@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Verification - SecureBank International</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #F5F6F7 !important;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #F5F6F7;
+            min-height: 100vh;
+        }
+
+        .verification-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .verification-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .verification-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #e1e5ee;
+        }
+
+        .verification-header h1 {
+            color: #B8E3E9;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .verification-header h2 {
+            color: #666;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .transaction-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .detail-group {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #B8E3E9;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e1e5ee;
+            margin: 30px 0;
+        }
+
+        .date-section {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .date-label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .date-value {
+            font-size: 1.2rem;
+            color: #B8E3E9;
+            font-weight: 700;
+        }
+
+        .info-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            color: #B8E3E9;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #B8E3E9;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e1e5ee;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .risk-low {
+            color: #28a745;
+        }
+
+        .risk-medium {
+            color: #ffc107;
+        }
+
+        .risk-high {
+            color: #dc3545;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+            justify-content: center;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-hold {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-hold:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .history-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .history-title {
+            color: #B8E3E9;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .history-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .history-label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .history-value {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .view-history-btn {
+            background: #B8E3E9;
+            color: #333;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+        }
+
+        .view-history-btn:hover {
+            background: #A0D8E0;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .verification-container {
+                padding: 15px;
+            }
+
+            .verification-card {
+                padding: 25px;
+            }
+
+            .transaction-details {
+                grid-template-columns: 1fr;
+            }
+
+            .info-sections {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .history-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verification-card {
+                padding: 20px;
+            }
+
+            .verification-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .verification-header h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <h1>SecureBank<span class="logo-subtitle">International</span></h1>
+                </div>
+                <div class="user-info">
+                    <span>Hello, Sarah Jones</span>
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="employee-dashboard.html">Dashboard</a></li>
+                    <li><a href="#" class="active">Verification</a></li>
+                    <li><a href="#">Transactions</a></li>
+                    <li><a href="#">Accounts</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="verification-container">
+            <!-- Main Verification Card -->
+            <div class="verification-card">
+                <div class="verification-header">
+                    <h1>SecureBank International</h1>
+                    <h2>Transaction Verification</h2>
+                </div>
+
+                <!-- Transaction Details -->
+                <div class="transaction-details">
+                    <div class="detail-group">
+                        <div class="detail-label">Reference ID</div>
+                        <div class="detail-value">1757596418637</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Customer</div>
+                        <div class="detail-value">John Customer</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Account Number</div>
+                        <div class="detail-value">1234567890</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Amount</div>
+                        <div class="detail-value">$150.00</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Beneficiary Name</div>
+                        <div class="detail-value">Jane Beneficiary</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Beneficiary Account</div>
+                        <div class="detail-value">0987654321</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">SWIFT Code</div>
+                        <div class="detail-value">ABNANL2A</div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value" id="statusValue">Pending Verification</div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Date Information -->
+                <div class="date-section">
+                    <div class="date-label">Transaction Date & Time</div>
+                    <div class="date-value">September 15, 2024 at 14:10 PM</div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Additional Information -->
+                <div class="info-sections">
+                    <div class="info-section">
+                        <h3 class="section-title"><i class="fas fa-info-circle"></i> Transaction Details</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Currency</span>
+                                <span class="info-value">USD</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Transaction Type</span>
+                                <span class="info-value">International Transfer</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Payment Method</span>
+                                <span class="info-value">SWIFT</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Location</span>
+                                <span class="info-value">Local</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3 class="section-title"><i class="fas fa-chart-line"></i> Risk Assessment</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Risk Level</span>
+                                <span class="info-value risk-low">Low</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Customer History</span>
+                                <span class="info-value">24 Transactions</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Amount Analysis</span>
+                                <span class="info-value">Below Average</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Geographic Risk</span>
+                                <span class="info-value risk-low">Low</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-approve" id="approveBtn">
+                        <i class="fas fa-check"></i> Approve Transaction
+                    </button>
+                    <button class="btn btn-hold" id="holdBtn">
+                        <i class="fas fa-pause"></i> Place On Hold
+                    </button>
+                    <button class="btn btn-reject" id="rejectBtn">
+                        <i class="fas fa-times"></i> Reject Transaction
+                    </button>
+                </div>
+            </div>
+
+            <!-- Customer History Card -->
+            <div class="history-section">
+                <h3 class="history-title"><i class="fas fa-history"></i> Customer History & Analytics</h3>
+                
+                <div class="history-grid">
+                    <div class="history-item">
+                        <div class="history-label">Customer Since</div>
+                        <div class="history-value">March 2019</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-label">Total Transactions</div>
+                        <div class="history-value">24</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-label">Approval Rate</div>
+                        <div class="history-value">100%</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-label">Average Amount</div>
+                        <div class="history-value">$245.50</div>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Beneficiary Relationship</span>
+                        <span class="info-value">First Transaction</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Amount Comparison</span>
+                        <span class="info-value">Below Average (-$95.50)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Last Transaction</span>
+                        <span class="info-value">August 28, 2024</span>
+                    </div>
+                </div>
+
+                <button class="view-history-btn" onclick="viewFullHistory()">
+                    <i class="fas fa-file-alt"></i> View Full Transaction History
+                </button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 SecureBank International. All rights reserved.</p>
+            <p>www.securebank.com | Employee Support: 1-800-INTERNAL</p>
+        </footer>
+    </div>
+
+    <script>
+        // Logout functionality
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to logout?')) {
+                alert('You have been logged out successfully.');
+                window.location.href = 'employee-login.html';
+            }
+        });
+
+        // Transaction action buttons
+        document.getElementById('approveBtn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to APPROVE this transaction?')) {
+                alert('Transaction has been approved successfully.');
+                updateStatus('Approved', '#28a745');
+            }
+        });
+
+        document.getElementById('rejectBtn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to REJECT this transaction?')) {
+                const reason = prompt('Please enter the reason for rejection:');
+                if (reason !== null) {
+                    alert('Transaction has been rejected. Reason: ' + reason);
+                    updateStatus('Rejected', '#dc3545');
+                }
+            }
+        });
+
+        document.getElementById('holdBtn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to place this transaction ON HOLD?')) {
+                const reason = prompt('Please enter the reason for placing on hold:');
+                if (reason !== null) {
+                    alert('Transaction has been placed on hold. Reason: ' + reason);
+                    updateStatus('On Hold', '#ffc107');
+                }
+            }
+        });
+
+        function updateStatus(status, color) {
+            const statusElement = document.getElementById('statusValue');
+            statusElement.textContent = status;
+            statusElement.style.color = color;
+        }
+
+        function viewFullHistory() {
+            alert('Opening full transaction history for John Customer...');
+            
+        }
+    </script>
+</body>
+</html>
