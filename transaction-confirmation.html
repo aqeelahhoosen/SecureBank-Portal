@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Confirmation - SecureBank International</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #F5F6F7 !important;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #F5F6F7;
+            min-height: 100vh;
+        }
+
+        .confirmation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 80vh;
+            justify-content: center;
+        }
+
+        .confirmation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: #B8E3E9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: #333;
+            font-size: 3rem;
+            box-shadow: 0 6px 20px rgba(184, 227, 233, 0.3);
+        }
+
+        .confirmation-header {
+            margin-bottom: 30px;
+        }
+
+        .confirmation-header h1 {
+            color: #B8E3E9;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .confirmation-header h2 {
+            color: #28a745;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .confirmation-message {
+            margin-bottom: 40px;
+        }
+
+        .completion-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .confirmation-message p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-list {
+            text-align: left;
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+
+        .features-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid #e1e5ee;
+            display: flex;
+            align-items: center;
+            font-size: 1.05rem;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 30px;
+            height: 30px;
+            background: #E8F7FA;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #B8E3E9;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .transaction-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: left;
+            border-left: 4px solid #B8E3E9;
+        }
+
+        .details-title {
+            font-weight: 600;
+            color: #B8E3E9;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .details-title i {
+            color: #B8E3E9;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-item {
+            margin-bottom: 15px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 16px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            min-width: 200px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #B8E3E9;
+            color: #333;
+        }
+
+        .btn-primary:hover {
+            background: #A0D8E0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 227, 233, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e1e5ee;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.8); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+
+        .confirmation-card {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .success-icon {
+            animation: scaleIn 0.6s ease-out 0.3s both;
+        }
+
+        @media (max-width: 768px) {
+            .confirmation-container {
+                padding: 15px;
+            }
+
+            .confirmation-card {
+                padding: 30px 25px;
+            }
+
+            .success-icon {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+
+            .confirmation-header h1 {
+                font-size: 2rem;
+            }
+
+            .confirmation-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .confirmation-card {
+                padding: 25px 20px;
+            }
+
+            .confirmation-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .confirmation-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .completion-text {
+                font-size: 1.2rem;
+            }
+
+            .transaction-details {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <h1>SecureBank<span class="logo-subtitle">International</span></h1>
+                </div>
+                <div class="user-info">
+                    <span>Hello, [Employee name]</span>
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="employee-dashboard.html">Dashboard</a></li>
+                    <li><a href="#">Transactions</a></li>
+                    <li><a href="transaction-verification.html">Verification</a></li>
+                    <li><a href="#">Accounts</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="confirmation-container">
+            <div class="confirmation-card">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                
+                <div class="confirmation-header">
+                    <h1>Mission Complete!</h1>
+                    <h2>Transactions successfully submitted to SWIFT</h2>
+                </div>
+                
+                <div class="confirmation-message">
+                    <p class="completion-text">Your job is complete</p>
+                    
+                    <div class="features-list">
+                        <ul>
+                            <li>
+                                <div class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                All selected transactions have been processed
+                            </li>
+                            <li>
+                                <div class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                SWIFT network has been notified
+                            </li>
+                            <li>
+                                <div class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                Customers will be updated on payment status
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <p>The international payments have been successfully transmitted to the SWIFT network for final processing and settlement.</p>
+                </div>
+                
+                <div class="transaction-details">
+                    <h3 class="details-title">
+                        <i class="fas fa-receipt"></i>
+                        Transaction Summary
+                    </h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Reference ID</div>
+                            <div class="detail-value">1757956430437</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">John Customer</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Amount</div>
+                            <div class="detail-value">$350.00 USD</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Beneficiary</div>
+                            <div class="detail-value">Jane Beneficiary</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">SWIFT Code</div>
+                            <div class="detail-value">ABNANL2A</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Submission Time</div>
+                            <div class="detail-value" id="submissionTime"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="employee-dashboard.html" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Staff Portal
+                    </a>
+                    <button class="btn btn-secondary" onclick="window.print()">
+                        <i class="fas fa-print"></i> Print Confirmation
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 SecureBank International. All rights reserved.</p>
+            <p>www.securebank.com | Employee Support: 1-800-INTERNAL</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set current date and time
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit'
+            };
+            document.getElementById('submissionTime').textContent = now.toLocaleDateString('en-US', options);
+        });
+
+        // Logout functionality
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to logout?')) {
+                alert('You have been logged out successfully.');
+                window.location.href = 'employee-login.html';
+            }
+        });
+
+        // Hover animation for success icon
+        const successIcon = document.querySelector('.success-icon');
+        successIcon.addEventListener('mouseover', function() {
+            this.style.transform = 'scale(1.05) rotate(5deg)';
+        });
+        
+        successIcon.addEventListener('mouseout', function() {
+            this.style.transform = 'scale(1) rotate(0)';
+        });
+
+        // Click animation for buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
