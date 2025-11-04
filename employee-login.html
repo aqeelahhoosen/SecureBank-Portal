@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Login - SecureBank International</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #F2F6FF;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #F2F6FF;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .login-header {
+            background: #B8E3E9;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .login-header .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .session-section {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            border-bottom: 1px solid #e1e5ee;
+        }
+
+        .session-section h2 {
+            color: #333;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .session-section h2 i {
+            color: #B8E3E9;
+        }
+
+        .login-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .login-option {
+            flex: 1;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .login-option:hover {
+            border-color: #B8E3E9;
+            background: #f8f9fa;
+        }
+
+        .login-option.active {
+            background: #B8E3E9;
+            border-color: #B8E3E9;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e1e5ee;
+            margin: 0;
+        }
+
+        .login-form-section {
+            padding: 40px 30px;
+        }
+
+        .form-title {
+            color: #333;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            background: white;
+        }
+
+        .form-input:focus {
+            border-color: #B8E3E9;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(184, 227, 233, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: #B8E3E9;
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #A0D8E0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 227, 233, 0.3);
+        }
+
+        .security-notice {
+            background: #E8F7FA;
+            border: 1px solid #B8E3E9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .security-notice p {
+            color: #333;
+            font-size: 0.85rem;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #B8E3E9;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #A0D8E0;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                max-width: 400px;
+            }
+            
+            .login-header {
+                padding: 30px 25px;
+            }
+            
+            .login-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .login-options {
+                flex-direction: column;
+            }
+            
+            .login-form-section {
+                padding: 30px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 20px 15px;
+            }
+            
+            .login-card {
+                max-width: 100%;
+            }
+            
+            .login-header {
+                padding: 25px 20px;
+            }
+            
+            .login-header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .session-section {
+                padding: 20px;
+            }
+            
+            .login-form-section {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <h1>SecureBank<span class="logo-subtitle">International</span></h1>
+                </div>
+                <div class="user-info">
+                    <!-- Empty on employee login page -->
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Customer Portal</a></li>
+                    <li><a href="#" class="active">Banking System</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="login-container">
+                <div class="login-card">
+                    <!-- Header Section -->
+                    <div class="login-header">
+                        <h1>SecureBank International</h1>
+                        <p class="subtitle">Banking System</p>
+                    </div>
+
+                    <!-- Secure Session Section -->
+                    <div class="session-section">
+                        <h2><i class="fas fa-shield-alt"></i> Secure Session</h2>
+                        <div class="login-options">
+                            <div class="login-option active">Customer Login</div>
+                            <div class="login-option" onclick="window.location.href='staff-login.html'">Staff Login</div>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- Employee Login Form -->
+                    <div class="login-form-section">
+                        <h3 class="form-title">Employee Login</h3>
+                        
+                        <form id="employeeLoginForm">
+                            <div class="form-group">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+                            </div>
+                            
+                            <button type="submit" class="login-btn">Login</button>
+                        </form>
+
+                        <div class="security-notice">
+                            <p><strong>Security Notice:</strong> This system is for authorized employees only. All activities are monitored and logged.</p>
+                        </div>
+
+                        <a href="index.html" class="back-link">← Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 SecureBank International. All rights reserved.</p>
+            <p>www.securebank.com | Employee Support: 1-800-INTERNAL</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('employeeLoginForm');
+            const loginOptions = document.querySelectorAll('.login-option');
+            
+            // Login option selection
+            loginOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    if (!this.classList.contains('active')) {
+                        loginOptions.forEach(opt => opt.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Update form title based on selection
+                        const formTitle = document.querySelector('.form-title');
+                        if (this.textContent === 'Staff Login') {
+                            formTitle.textContent = 'Staff Login';
+                        } else {
+                            formTitle.textContent = 'Employee Login';
+                        }
+                    }
+                });
+            });
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                if (username && password) {
+                    // Show loading state
+                    const loginBtn = form.querySelector('.login-btn');
+                    const originalText = loginBtn.textContent;
+                    loginBtn.textContent = 'Authenticating...';
+                    loginBtn.disabled = true;
+                    
+                    
+                    setTimeout(() => {
+                        
+                        alert('Authentication successful! Welcome to SecureBank Banking System.');
+                        
+                        // Redirect to employee dashboard 
+                        window.location.href = 'employee-dashboard.html';
+                        
+                        // Reset button
+                        loginBtn.textContent = originalText;
+                        loginBtn.disabled = false;
+                    }, 1500);
+                } else {
+                    alert('Please enter both username and password.');
+                }
+            });
+            
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            });
+            
+            // Auto-focus username field
+            document.getElementById('username').focus();
+        });
+    </script>
+</body>
+</html>
