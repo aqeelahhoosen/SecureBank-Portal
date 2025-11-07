@@ -1,0 +1,28 @@
+version: 2.1
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:16.20
+    working_directory: ~/repo
+
+jobs:
+  backend-build:
+    executor: node-executor
+    steps:
+      - checkout
+      - run: cd SECUREBANK-API && npm install
+      - run: cd SECUREBANK-API && npm test
+
+  frontend-build:
+    executor: node-executor
+    steps:
+      - checkout
+      - run: cd securebank-frontend && npm install
+      - run: cd securebank-frontend && npm run build
+
+workflows:
+  build_and_test:
+    jobs:
+      - backend-build
+      - frontend-build
